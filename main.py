@@ -21,22 +21,22 @@ class App:
 
         self.slopeDepLabel = Label(self.slopeSection, text="THR elevation in use", font=self.defaultFont)
         self.slopeDepLabel.grid(row = 0, column = 0, sticky = W, pady = 2, padx= 10)
-        self.slopeDep = Entry(self.slopeSection, width=10, font=self.defaultFont)
+        self.slopeDep = Entry(self.slopeSection, width=5, font=self.defaultFont)
         self.slopeDep.grid(row = 0, column = 1, sticky = W, pady = 2, padx= 10)
 
-        self.slopeArrLabel = Label(self.slopeSection, text="Opposit THR elevation", font=self.defaultFont)
-        self.slopeArrLabel.grid(row = 1, column = 0, sticky = W, pady = 2, padx= 10)
-        self.slopeArr = Entry(self.slopeSection, width=10, font=self.defaultFont)
-        self.slopeArr.grid(row = 1, column = 1, sticky = W, pady = 2, padx= 10)
+        self.slopeOpositLabel = Label(self.slopeSection, text="Opposit THR elevation", font=self.defaultFont)
+        self.slopeOpositLabel.grid(row = 1, column = 0, sticky = W, pady = 2, padx= 10)
+        self.slopeOposit = Entry(self.slopeSection, width=5, font=self.defaultFont)
+        self.slopeOposit.grid(row = 1, column = 1, sticky = W, pady = 2, padx= 10)
 
         self.rwyLengthLabel = Label(self.slopeSection, text="RWY Length in use", font=self.defaultFont)
         self.rwyLengthLabel.grid(row = 2, column = 0, sticky = W, pady = 2, padx= 10)
-        self.rwyLength = Entry(self.slopeSection, width=10, font=self.defaultFont)
+        self.rwyLength = Entry(self.slopeSection, width=5, font=self.defaultFont)
         self.rwyLength.grid(row = 2, column = 1, sticky = W, pady = 2, padx= 10)
     
-        self.slopeButton = Button(self.slopeSection, text="Test", width=5, command=self.mudar_texto)
+        self.slopeButton = Button(self.slopeSection, text="Calculate", width=10, command=self.mudar_texto)
         self.slopeButton.grid(row = 3, column = 0, sticky = W, pady = 2, padx= 10)
-        self.slopeResponse = Label(self.slopeSection, text="RWY Slope")
+        self.slopeResponse = Label(self.slopeSection, text="...", padx=8, font=self.h3)
         self.slopeResponse.grid(row = 3, column = 1, sticky = W, pady = 2, padx= 10)
 
         # WEATHER --------------------------
@@ -62,6 +62,14 @@ class App:
         self.qnh = Entry(self.weatherSection, width=4, font=self.defaultFont)
         self.qnh.grid(row = 2, column = 3, sticky = W, pady = 2, padx= 10)
 
+        self.rwyConditionLabel = Label(self.weatherSection, text="RWY Condition", font=self.defaultFont)
+        self.rwyConditionLabel.grid(row = 3, column = 0, sticky = W, pady = 2, padx= 10)
+        condition_var = "Dry"
+        self.rwyCondition = ttk.Combobox(self.weatherSection, width=12, font=self.defaultFont, textvariable=condition_var, state="readonly")
+        self.rwyCondition["values"] = ("Dry", "Wet", "Water 6.3mm", "Water 12.7mm", "Slush 6.3mm", "Slush 12.7mm", "Comp. Snow")
+        self.rwyCondition.current(0)
+        self.rwyCondition.grid(row = 3, column = 1, columnspan=3, sticky = W, pady = 2, padx= 10)
+        
         # exit Button
         self.exitButton = Button(self.containerExitButton, text="Exit", width=5, command=self.containerTakeoff.quit)
         self.exitButton.pack(side=RIGHT)
@@ -69,12 +77,13 @@ class App:
     def mudar_texto(self):
         try:
             dep = self.slopeDep.get()
-            arr = self.slopeArr.get()
+            oposit = self.slopeOposit.get()
             rwyLength = self.rwyLength.get()
-            if dep == "" or arr == "" or rwyLength == "":
+            if dep == "" or oposit == "" or rwyLength == "":
                 self.slopeResponse["text"] = "..."
             else:
-                self.slopeResponse["text"] = round((((int(arr) - int(dep)) / int(rwyLength))*100),2)
+                self.slopeResponse["text"] = round((((int(dep) - int(oposit)) / int(rwyLength))*100),2)
+
         except:
             self.slopeResponse["text"] = "..."
 
