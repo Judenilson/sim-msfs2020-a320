@@ -73,14 +73,17 @@ def main(page: ft.Page):
 
     def validate_degrees(e):
         count = len(e.control.value)
-        # analisa apenas se existir algo digitado
         if not validate_only_positive_number(e):
             return
+        # analisa apenas se existir algo digitado
         if count > 0:
             if int(e.control.value) < 1 or int(e.control.value) > 360:
                 validate_entry(e)
                 e.control.value = ""
         page.update()
+
+    def route(e):
+        page.views.clear()
 
 # objetos ------------------------
     # Titulo -------------------------
@@ -89,7 +92,7 @@ def main(page: ft.Page):
     # Seção do Slope -------------------------
     rwy_in_use = ft.TextField(label="THR elevation in use", suffix_text="ft", width=150, max_length=5, on_change=validate_only_real_number)
     opposit = ft.TextField(label="Opposit THR elevation", suffix_text="ft", width=150, max_length=5, on_change=validate_only_real_number)
-    length_rwy_in_use = ft.TextField(label="Length of RWY in use", suffix_text="ft", width=150, max_length=5, on_change=validate_only_real_number)
+    length_rwy_in_use = ft.TextField(label="Length of RWY in use", suffix_text="ft", width=150, max_length=5, on_change=validate_only_positive_number)
     slope_button = ft.ElevatedButton("Calculate", on_click=slope_calculate)
     slope_button_reset = ft.OutlinedButton("Reset", on_click=slope_reset)
     slope_result = ft.TextField(label="SLOPE", bgcolor=ft.colors.SECONDARY_CONTAINER, read_only=True, width=150, suffix_text="%", text_size=30)
@@ -112,7 +115,7 @@ def main(page: ft.Page):
         ])
 
     # Seção da Aeronave -------------------------
-    tow = ft.TextField(label="TOW", suffix_text="Ton", width=100, on_change=validate_only_positive_number)
+    tow = ft.TextField(label="TOW", suffix_text="Lb", width=100, on_change=validate_only_positive_number)
     tocg = ft.TextField(label="TOCG", suffix_text="%", width=100, on_change=validate_only_positive_number)
     thrust = ft.Dropdown(
         label="Thrust",
@@ -141,6 +144,8 @@ def main(page: ft.Page):
         value = False,
         label_position=ft.LabelPosition.LEFT
         )
+    
+    run_button = ft.FilledButton("RUN", on_click="")
 
 # Render ------------------------
     page.add(
@@ -181,6 +186,7 @@ def main(page: ft.Page):
                 rwy_condition
             ],
             alignment=ft.MainAxisAlignment.SPACE_AROUND,
+            vertical_alignment=ft.CrossAxisAlignment.START,
             run_spacing=10,
         ),
         ft.Row(
@@ -198,9 +204,10 @@ def main(page: ft.Page):
                 air_cond,
                 anti_ice,
             ],
-            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+            alignment=ft.MainAxisAlignment.END,
             run_spacing=10,
-        )
+        ),
+        run_button
     )
 
 
