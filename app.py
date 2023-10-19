@@ -157,6 +157,7 @@ def main(page: ft.Page):
     r_vr = ft.TextField(label="VR")
     r_v2 = ft.TextField(label="V2")
     r_trim = ft.TextField(label="Trim")
+    r_mtow = ft.TextField(label="MTOW")
     return_button = ft.ElevatedButton("Return", on_click=lambda _: page.go("/"))
 
 # Pages ------------------------
@@ -242,6 +243,7 @@ def main(page: ft.Page):
         r_vr,
         r_v2,
         r_trim,
+        r_mtow,
         ft.Container(
             return_button,
             alignment=ft.alignment.center,
