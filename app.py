@@ -84,8 +84,22 @@ def main(page: ft.Page):
                 e.control.value = ""
         page.update()
 
-    def route(e):
-        page.views.clear()
+    def run(e):
+        r_config.value = flaps.value
+        if rwy_condition.value == "Dry" or rwy_condition.value == "Wet":
+            if thrust.value == "FLEX":
+                if flaps.value == "1+F":
+                    r_thrust.value = "FLEX"
+                elif flaps.value == "2":
+                    r_thrust.value = "FLEX"
+                else:
+                    r_thrust.value = "FLEX"
+            else:
+                r_thrust.value = "TOGA"
+        else:
+            r_thrust.value = "TOGA"                        
+        page.go("/result")
+        page.update()
 
 # Main Page Objects------------------------
     # Title -------------------------
@@ -147,7 +161,7 @@ def main(page: ft.Page):
         label_position=ft.LabelPosition.LEFT
         )
     
-    run_button = ft.FilledButton("RUN", on_click=lambda _: page.go("/result"), width=300, height=70)
+    run_button = ft.FilledButton("RUN", on_click=run, width=300, height=70)
 
 # Result Page Objects------------------------
 
